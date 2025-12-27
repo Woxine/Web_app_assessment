@@ -13,7 +13,7 @@ import os
 db = SQLAlchemy()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-admin = Admin(name="Farmer's Delight Wiki", template_mode='bootstrap3')
+admin = Admin(name="Farmer's Delight Wiki")
 migrate = Migrate()
 
 

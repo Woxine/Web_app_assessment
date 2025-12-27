@@ -34,8 +34,9 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     """生产环境配置"""
     DEBUG = False
+    # 默认使用 SQLite，如需使用 MySQL 可通过环境变量 DATABASE_URL 设置
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql://user:password@localhost/farmers_delight'
+        'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_ECHO = False
 
 

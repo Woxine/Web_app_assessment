@@ -17,7 +17,7 @@
 ## 技术栈
 
 - **后端**: Python 3 + Flask
-- **数据库**: Flask-SQLAlchemy (SQLite/MySQL)
+- **数据库**: Flask-SQLAlchemy (SQLite，支持 MySQL)
 - **前端**: Jinja2 + HTML5 + CSS3
 - **表单**: Flask-WTF (CSRF 保护)
 - **认证**: Flask-Login
@@ -55,9 +55,9 @@ pip install -r requirements.txt
 
 ```python
 SECRET_KEY = 'your-secret-key-here'
-DATABASE_URL = 'sqlite:///app.db'  # 开发环境
-# 或
-# DATABASE_URL = 'mysql://user:password@localhost/farmers_delight'  # 生产环境
+DATABASE_URL = 'sqlite:///app.db'  # 默认使用 SQLite
+# 如需使用 MySQL，可取消注释并修改以下行：
+# DATABASE_URL = 'mysql://user:password@localhost/farmers_delight'
 ```
 
 ### 5. 初始化数据库
@@ -114,7 +114,7 @@ python -m unittest discover tests
 
 1. 上传项目文件到 PythonAnywhere
 2. 配置 WSGI 文件（参考 `wsgi.py`）
-3. 设置环境变量（SECRET_KEY, DATABASE_URL）
+3. 设置环境变量（SECRET_KEY，DATABASE_URL 可选，默认使用 SQLite）
 4. 运行数据库迁移
 5. 配置静态文件路径
 
