@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}菜品列表 - Farmer's Delight Wiki{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>菜品列表</h1>
+    </header>
+
+    {% if meals %}
+        <div class="meal-grid">
+            {% for meal in meals %}
+            <article class="meal-card">
+                {% if meal.image_url %}
+                    <img src="{{ meal.image_url }}" alt="{{ meal.name }}" loading="lazy">
+                {% else %}
+                    <div class="placeholder-image">无图片</div>
+                {% endif %}
+                <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>
+                <p class="meal-stats">
+                    <span>恢复饱食度: {{ meal.hunger_restored }}</span>
+                    <span>饱和度: {{ meal.saturation }}</span>
+                </p>
+                {% if meal.description %}
+                    <p class="meal-description">{{ meal.description[:100] }}{% if meal.description|length > 100 %}...{% endif %}</p>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+
+        <nav class="pagination" role="navigation" aria-label="分页导航">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('main.meals', page=pagination.prev_num) }}" aria-label="上一页">上一页</a>
+            {% endif %}
+            
+            <span class="page-info">
+                第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页
+            </span>
+            
+            {% if pagination.has_next %}
+                <a href="{{ url_for('main.meals', page=pagination.next_num) }}" aria-label="下一页">下一页</a>
+            {% endif %}
+        </nav>
+    {% else %}
+        <p>暂无菜品数据。</p>
+    {% endif %}
+</article>
+{% endblock %}
+

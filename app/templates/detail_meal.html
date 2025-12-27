@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ meal.name }} - Farmer's Delight Wiki{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>{{ meal.name }}</h1>
+    </header>
+
+    <div class="detail-content">
+        {% if meal.image_url %}
+            <img src="{{ meal.image_url }}" alt="{{ meal.name }}" class="detail-image" loading="lazy">
+        {% endif %}
+
+        <div class="detail-info">
+            <h2>基本信息</h2>
+            <dl>
+                <dt>恢复饱食度</dt>
+                <dd>{{ meal.hunger_restored }}</dd>
+                
+                <dt>饱和度</dt>
+                <dd>{{ meal.saturation }}</dd>
+                
+                {% if meal.description %}
+                <dt>描述</dt>
+                <dd>{{ meal.description }}</dd>
+                {% endif %}
+            </dl>
+
+            <div class="like-section">
+                <button class="like-btn" 
+                        data-type="meal" 
+                        data-id="{{ meal.id }}"
+                        aria-label="点赞此菜品"
+                        {% if not current_user.is_authenticated %}disabled title="请先登录"{% endif %}>
+                    <span class="like-icon">{% if is_liked %}❤️{% else %}🤍{% endif %}</span>
+                    <span class="like-count">{{ meal.get_likes_count() }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {% if ingredients %}
+    <section class="ingredients">
+        <h2>所需食材</h2>
+        <ul class="ingredient-list">
+            {% for ingredient in ingredients %}
+            <li>
+                <a href="{{ url_for('main.crop_detail', id=ingredient.id) }}">{{ ingredient.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+</article>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initLikeButtons();
+    });
+</script>
+{% endblock %}
+

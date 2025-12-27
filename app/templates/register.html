@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}注册 - Farmer's Delight Wiki{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>用户注册</h1>
+    </header>
+
+    <form method="POST" action="{{ url_for('auth.register') }}" class="auth-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control", aria_label="用户名", aria_required="true", aria_describedby="username-help") }}
+            <small id="username-help" class="form-text">用户名长度必须在3-20个字符之间</small>
+            {% if form.username.errors %}
+                <div class="error-message" role="alert">
+                    {% for error in form.username.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control", aria_label="邮箱", aria_required="true", type="email") }}
+            {% if form.email.errors %}
+                <div class="error-message" role="alert">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control", aria_label="密码", aria_required="true", aria_describedby="password-help") }}
+            <small id="password-help" class="form-text">密码长度至少8个字符，必须包含字母和数字</small>
+            {% if form.password.errors %}
+                <div class="error-message" role="alert">
+                    {% for error in form.password.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password2.label }}
+            {{ form.password2(class="form-control", aria_label="确认密码", aria_required="true") }}
+            {% if form.password2.errors %}
+                <div class="error-message" role="alert">
+                    {% for error in form.password2.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>
+                {{ form.agree_terms(aria_required="true") }}
+                {{ form.agree_terms.label.text }}
+            </label>
+            {% if form.agree_terms.errors %}
+                <div class="error-message" role="alert">
+                    {% for error in form.agree_terms.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <p class="auth-link">
+        已有账号？<a href="{{ url_for('auth.login') }}">立即登录</a>
+    </p>
+</article>
+{% endblock %}
+

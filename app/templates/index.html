@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - Farmer's Delight Wiki{% endblock %}
+
+{% block content %}
+<article>
+    <section class="intro">
+        <h2>关于 Farmer's Delight</h2>
+        <p>Farmer's Delight 是一个为 Minecraft 添加了丰富农业和烹饪系统的模组。本 Wiki 提供了详细的作物、食材和烹饪菜品信息，帮助玩家更好地体验这个模组。</p>
+    </section>
+
+    <section class="top-meals">
+        <h2>最受欢迎的菜品</h2>
+        {% if top_meals %}
+            <div class="meal-grid">
+                {% for meal, likes_count in top_meals %}
+                <article class="meal-card">
+                    {% if meal.image_url %}
+                        <img src="{{ meal.image_url }}" alt="{{ meal.name }}" loading="lazy">
+                    {% else %}
+                        <div class="placeholder-image">无图片</div>
+                    {% endif %}
+                    <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>
+                    <p class="meal-stats">
+                        <span>恢复饱食度: {{ meal.hunger_restored }}</span>
+                        <span>点赞数: {{ likes_count }}</span>
+                    </p>
+                </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>暂无数据，请先添加菜品。</p>
+        {% endif %}
+    </section>
+</article>
+{% endblock %}
+

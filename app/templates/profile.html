@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}用户资料 - Farmer's Delight Wiki{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>用户资料</h1>
+    </header>
+
+    <div class="profile-info">
+        <dl>
+            <dt>用户名</dt>
+            <dd>{{ user.username }}</dd>
+            
+            <dt>邮箱</dt>
+            <dd>{{ user.email }}</dd>
+            
+            <dt>注册时间</dt>
+            <dd>{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</dd>
+        </dl>
+
+        <div class="profile-actions">
+            <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-primary">编辑资料</a>
+        </div>
+    </div>
+</article>
+{% endblock %}
+

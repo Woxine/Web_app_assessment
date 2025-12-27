@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Farmer's Delight Wiki - Minecraft 模组百科">
+    <title>{% block title %}Farmer's Delight Wiki{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header role="banner">
+        <div class="container">
+            <h1>Farmer's Delight Wiki</h1>
+            <p class="subtitle">Minecraft 模组百科</p>
+        </div>
+    </header>
+
+    <nav role="navigation" aria-label="主导航">
+        <div class="container">
+            <ul>
+                <li><a href="{{ url_for('main.index') }}" aria-label="首页">首页</a></li>
+                <li><a href="{{ url_for('main.crops') }}" aria-label="作物列表">作物</a></li>
+                <li><a href="{{ url_for('main.meals') }}" aria-label="菜品列表">菜品</a></li>
+                <li><a href="{{ url_for('main.search') }}" aria-label="搜索">搜索</a></li>
+                <li><a href="{{ url_for('main.rankings') }}" aria-label="排行榜">排行榜</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('auth.profile') }}" aria-label="用户资料">资料</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}" aria-label="登出">登出</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}" aria-label="登录">登录</a></li>
+                    <li><a href="{{ url_for('auth.register') }}" aria-label="注册">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}" role="alert" aria-live="polite">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 Farmer's Delight Wiki. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 将 CSRF token 存储为全局变量供 AJAX 使用
+        window.csrfToken = '{{ csrf_token() }}';
+    </script>
+    <script src="{{ url_for('static', filename='js/ajax.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
+
