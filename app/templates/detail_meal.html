@@ -17,14 +17,14 @@
             <h2>基本信息</h2>
             <dl>
                 <dt>恢复饱食度</dt>
-                <dd>{{ meal.hunger_restored }}</dd>
+                <dd>{{ meal.hunger_restored }} 点</dd>
                 
                 <dt>饱和度</dt>
                 <dd>{{ meal.saturation }}</dd>
                 
                 {% if meal.description %}
                 <dt>描述</dt>
-                <dd>{{ meal.description }}</dd>
+                <dd class="description-text">{{ meal.description }}</dd>
                 {% endif %}
             </dl>
 

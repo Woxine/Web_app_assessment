@@ -215,6 +215,13 @@ main {
     color: #666;
 }
 
+.description-text {
+    line-height: 1.8;
+    max-width: 600px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 /* 点赞按钮 */
 .like-section {
     margin-top: 1.5rem;

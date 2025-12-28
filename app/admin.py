@@ -5,6 +5,7 @@ from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from flask import redirect, url_for, request
+from wtforms import PasswordField
 from app import db, admin
 from app.models import User, Crop, Meal
 
@@ -32,7 +33,12 @@ class UserModelView(SecureModelView):
     column_list = ['id', 'username', 'email', 'created_at']
     column_searchable_list = ['username', 'email']
     column_filters = ['created_at']
-    form_excluded_columns = ['password_hash', 'liked_crops', 'liked_meals']
+    form_excluded_columns = ['password_hash', 'liked_crops', 'liked_meals', 'created_at']
+    
+    # 添加密码字段到表单（用于创建/编辑用户）
+    form_extra_fields = {
+        'password': PasswordField('密码（留空则不修改）')
+    }
     
     def on_model_change(self, form, model, is_created):
         """处理密码更新"""
@@ -46,6 +52,9 @@ class CropModelView(SecureModelView):
     column_searchable_list = ['name', 'description']
     column_filters = ['hunger_points', 'created_at']
     form_columns = ['name', 'description', 'image_url', 'hunger_points']
+    # 允许批量删除
+    can_delete = True
+    can_export = True
 
 
 class MealModelView(SecureModelView):
@@ -54,6 +63,9 @@ class MealModelView(SecureModelView):
     column_searchable_list = ['name', 'description']
     column_filters = ['hunger_restored', 'saturation', 'created_at']
     form_columns = ['name', 'description', 'image_url', 'hunger_restored', 'saturation', 'ingredients']
+    # 允许批量删除
+    can_delete = True
+    can_export = True
 
 
 def init_admin():
