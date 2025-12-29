@@ -14,8 +14,9 @@ class SecureAdminIndexView(AdminIndexView):
     """安全的管理后台首页视图"""
     def is_accessible(self):
         return current_user.is_authenticated and current_user.username == 'admin'
-    
+
     def inaccessible_callback(self, name, **kwargs):
+        # 确保重定向到登录页面，并传递 next 参数
         return redirect(url_for('auth.login', next=request.url))
 
 
@@ -70,6 +71,8 @@ class MealModelView(SecureModelView):
 
 def init_admin():
     """初始化 Flask-Admin"""
+    # 设置模板模式为 Bootstrap 3（避免与我们的样式冲突）
+    admin.template_mode = 'bootstrap3'
     admin.index_view = SecureAdminIndexView()
     admin.add_view(UserModelView(User, db.session, name='用户', endpoint='admin_users'))
     admin.add_view(CropModelView(Crop, db.session, name='作物', endpoint='admin_crops'))

@@ -13,43 +13,43 @@ REAL_CROPS = [
         'name': 'Cabbage',
         'description': 'Cabbage is a leafy vegetable crop that can be grown from cabbage seeds. It restores 1 hunger point when eaten raw.',
         'hunger_points': 1,
-        'image_url': '/static/images/cabbage.jpg'  # 示例图片路径
+        'image_url': '/static/images/Cabbage.jpg'  # 示例图片路径
     },
     {
         'name': 'Tomato',
         'description': 'Tomato is a red fruit crop that can be grown from tomato seeds. It restores 2 hunger points and can be used in various recipes.',
         'hunger_points': 2,
-        'image_url': ''
+        'image_url': '/static/images/Tomato.jpg'
     },
     {
         'name': 'Onion',
         'description': 'Onion is a bulbous vegetable that can be grown from onion seeds. It restores 1 hunger point and is commonly used as a cooking ingredient.',
         'hunger_points': 1,
-        'image_url': ''
+        'image_url': '/static/images/Onion.jpg'
     },
     {
         'name': 'Rice',
         'description': 'Rice is a grain crop that can be grown from rice seeds. It must be cooked before consumption and is a staple ingredient in many meals.',
         'hunger_points': 1,
-        'image_url': ''
+        'image_url': '/static/images/Rice.jpg'
     },
     {
         'name': 'Beetroot',
         'description': 'Beetroot is a root vegetable that can be grown from beetroot seeds. It restores 1 hunger point and has a deep red color.',
         'hunger_points': 1,
-        'image_url': ''
+        'image_url': '/static/images/Beetroot.jpg'
     },
     {
         'name': 'Carrot',
         'description': 'Carrot is an orange root vegetable that restores 3 hunger points. It can be eaten raw or used in various recipes.',
         'hunger_points': 3,
-        'image_url': ''
+        'image_url': '/static/images/Carrot.jpg'
     },
     {
         'name': 'Potato',
         'description': 'Potato is a starchy tuber that restores 1 hunger point when raw. It can be cooked in various ways to create delicious meals.',
         'hunger_points': 1,
-        'image_url': ''
+        'image_url': '/static/images/Potato.jpg'
     },
 ]
 

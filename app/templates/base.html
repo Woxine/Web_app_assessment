@@ -8,10 +8,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>{% block title %}Farmer's Delight Wiki{% endblock %}</title>
+    {% if not request.endpoint or not request.endpoint.startswith('admin') %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% endif %}
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    {% if not request.endpoint or not request.endpoint.startswith('admin') %}
     <header role="banner">
         <div class="container">
             <h1>🌾 Farmer's Delight Wiki</h1>
@@ -37,6 +40,7 @@
             </ul>
         </div>
     </nav>
+    {% endif %}
 
     <main role="main">
         <div class="container">
@@ -56,18 +60,22 @@
         </div>
     </main>
 
+    {% if not request.endpoint or not request.endpoint.startswith('admin') %}
     <footer role="contentinfo">
         <div class="container">
             <p>&copy; 2025 Farmer's Delight Wiki. Made with ❤️ for Minecraft community.</p>
             <p>探索农业的乐趣，发现烹饪的魔法！</p>
         </div>
     </footer>
+    {% endif %}
 
     <script>
         // 将 CSRF token 存储为全局变量供 AJAX 使用
         window.csrfToken = '{{ csrf_token() }}';
     </script>
+    {% if not request.endpoint or not request.endpoint.startswith('admin') %}
     <script src="{{ url_for('static', filename='js/ajax.js') }}"></script>
+    {% endif %}
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
