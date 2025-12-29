@@ -3,9 +3,10 @@
 {% block title %}菜品列表 - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
-<article>
+<section>
     <header>
-        <h1>菜品列表</h1>
+        <h1>🍽️ 菜品列表</h1>
+        <p>探索 Farmer's Delight 中所有美味的菜品，从简单的沙拉到复杂的料理，应有尽有！</p>
     </header>
 
     {% if meals %}
@@ -15,12 +16,15 @@
                 {% if meal.image_url %}
                     <img src="{{ meal.image_url }}" alt="{{ meal.name }}" loading="lazy">
                 {% else %}
-                    <div class="placeholder-image">无图片</div>
+                    <div class="placeholder-image">
+                        <span>🍽️</span>
+                        <p>暂无图片</p>
+                    </div>
                 {% endif %}
                 <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>
                 <p class="meal-stats">
-                    <span>恢复饱食度: {{ meal.hunger_restored }}</span>
-                    <span>饱和度: {{ meal.saturation }}</span>
+                    <span>🍎 恢复饱食度: {{ meal.hunger_restored }}</span>
+                    <span>⚡ 饱和度: {{ meal.saturation }}</span>
                 </p>
                 {% if meal.description %}
                     <p class="meal-description">{{ meal.description[:100] }}{% if meal.description|length > 100 %}...{% endif %}</p>
@@ -31,20 +35,23 @@
 
         <nav class="pagination" role="navigation" aria-label="分页导航">
             {% if pagination.has_prev %}
-                <a href="{{ url_for('main.meals', page=pagination.prev_num) }}" aria-label="上一页">上一页</a>
+                <a href="{{ url_for('main.meals', page=pagination.prev_num) }}" aria-label="上一页">⬅️ 上一页</a>
             {% endif %}
-            
+
             <span class="page-info">
-                第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页
+                📄 第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页
             </span>
-            
+
             {% if pagination.has_next %}
-                <a href="{{ url_for('main.meals', page=pagination.next_num) }}" aria-label="下一页">下一页</a>
+                <a href="{{ url_for('main.meals', page=pagination.next_num) }}" aria-label="下一页">下一页 ➡️</a>
             {% endif %}
         </nav>
     {% else %}
-        <p>暂无菜品数据。</p>
+        <div class="no-results">
+            <h3>🍽️ 暂无菜品数据</h3>
+            <p>菜品数据正在加载中，请稍后再试！</p>
+        </div>
     {% endif %}
-</article>
+</section>
 {% endblock %}
 

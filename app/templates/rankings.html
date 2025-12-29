@@ -3,44 +3,51 @@
 {% block title %}排行榜 - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
-<article>
+<section>
     <header>
-        <h1>排行榜</h1>
+        <h1>🏆 排行榜</h1>
+        <p>看看社区中最受欢迎的作物和菜品！</p>
     </header>
 
     <div class="rankings-container">
         <section class="crop-rankings">
-            <h2>最受欢迎的作物</h2>
+            <h2>🌱 最受欢迎的作物</h2>
             {% if crop_rankings %}
                 <ol class="ranking-list" role="list">
                     {% for crop, likes_count in crop_rankings %}
                     <li role="listitem">
                         <a href="{{ url_for('main.crop_detail', id=crop.id) }}">{{ crop.name }}</a>
-                        <span class="likes-count">👍 {{ likes_count }}</span>
+                        <span class="likes-count">❤️ {{ likes_count }}</span>
                     </li>
                     {% endfor %}
                 </ol>
             {% else %}
-                <p>暂无数据。</p>
+                <div class="no-results">
+                    <h3>🌱 暂无作物数据</h3>
+                    <p>快来为作物点赞吧！</p>
+                </div>
             {% endif %}
         </section>
 
         <section class="meal-rankings">
-            <h2>最受欢迎的菜品</h2>
+            <h2>🍽️ 最受欢迎的菜品</h2>
             {% if meal_rankings %}
                 <ol class="ranking-list" role="list">
                     {% for meal, likes_count in meal_rankings %}
                     <li role="listitem">
                         <a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a>
-                        <span class="likes-count">👍 {{ likes_count }}</span>
+                        <span class="likes-count">❤️ {{ likes_count }}</span>
                     </li>
                     {% endfor %}
                 </ol>
             {% else %}
-                <p>暂无数据。</p>
+                <div class="no-results">
+                    <h3>🍽️ 暂无菜品数据</h3>
+                    <p>快来为菜品点赞吧！</p>
+                </div>
             {% endif %}
         </section>
     </div>
-</article>
+</section>
 {% endblock %}
 

@@ -3,9 +3,10 @@
 {% block title %}作物列表 - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
-<article>
+<section>
     <header>
-        <h1>作物列表</h1>
+        <h1>🌱 作物列表</h1>
+        <p>探索 Farmer's Delight 中所有的作物，从基础的蔬菜到稀有的食材，应有尽有！</p>
     </header>
 
     {% if crops %}
@@ -15,10 +16,13 @@
                 {% if crop.image_url %}
                     <img src="{{ crop.image_url }}" alt="{{ crop.name }}" loading="lazy">
                 {% else %}
-                    <div class="placeholder-image">无图片</div>
+                    <div class="placeholder-image">
+                        <span>🌿</span>
+                        <p>暂无图片</p>
+                    </div>
                 {% endif %}
                 <h3><a href="{{ url_for('main.crop_detail', id=crop.id) }}">{{ crop.name }}</a></h3>
-                <p class="crop-stats">恢复饱食度: {{ crop.hunger_points }}</p>
+                <p class="crop-stats">🍎 恢复饱食度: {{ crop.hunger_points }}</p>
                 {% if crop.description %}
                     <p class="crop-description">{{ crop.description[:100] }}{% if crop.description|length > 100 %}...{% endif %}</p>
                 {% endif %}
@@ -28,20 +32,23 @@
 
         <nav class="pagination" role="navigation" aria-label="分页导航">
             {% if pagination.has_prev %}
-                <a href="{{ url_for('main.crops', page=pagination.prev_num) }}" aria-label="上一页">上一页</a>
+                <a href="{{ url_for('main.crops', page=pagination.prev_num) }}" aria-label="上一页">⬅️ 上一页</a>
             {% endif %}
-            
+
             <span class="page-info">
-                第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页
+                📄 第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页
             </span>
-            
+
             {% if pagination.has_next %}
-                <a href="{{ url_for('main.crops', page=pagination.next_num) }}" aria-label="下一页">下一页</a>
+                <a href="{{ url_for('main.crops', page=pagination.next_num) }}" aria-label="下一页">下一页 ➡️</a>
             {% endif %}
         </nav>
     {% else %}
-        <p>暂无作物数据。</p>
+        <div class="no-results">
+            <h3>🌱 暂无作物数据</h3>
+            <p>作物数据正在加载中，请稍后再试！</p>
+        </div>
     {% endif %}
-</article>
+</section>
 {% endblock %}
 

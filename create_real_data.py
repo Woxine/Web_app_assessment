@@ -13,7 +13,7 @@ REAL_CROPS = [
         'name': 'Cabbage',
         'description': 'Cabbage is a leafy vegetable crop that can be grown from cabbage seeds. It restores 1 hunger point when eaten raw.',
         'hunger_points': 1,
-        'image_url': ''  # 可以后续添加图片 URL
+        'image_url': '/static/images/cabbage.jpg'  # 示例图片路径
     },
     {
         'name': 'Tomato',
@@ -59,7 +59,7 @@ REAL_MEALS = [
         'name': 'Noodle Soup',
         'description': 'A type of soup-based staple food where cooked noodles are soaked in a flavorful clear or thick broth.',
         'hunger_restored': 14,
-        'saturation': 12,
+        'saturation': 12.0,
         'ingredients': []  # 将在后面建立关系
     },
     {

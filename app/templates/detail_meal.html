@@ -3,34 +3,40 @@
 {% block title %}{{ meal.name }} - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
-<article>
+<section>
     <header>
-        <h1>{{ meal.name }}</h1>
+        <h1>🍽️ {{ meal.name }}</h1>
+        <p>探索这个菜品的详细信息和所需食材！</p>
     </header>
 
     <div class="detail-content">
         {% if meal.image_url %}
             <img src="{{ meal.image_url }}" alt="{{ meal.name }}" class="detail-image" loading="lazy">
+        {% else %}
+            <div class="placeholder-image" style="width: 100%; height: 350px; border-radius: var(--border-radius);">
+                <span style="font-size: 4rem;">🍽️</span>
+                <p>暂无图片</p>
+            </div>
         {% endif %}
 
         <div class="detail-info">
-            <h2>基本信息</h2>
+            <h2>📋 基本信息</h2>
             <dl>
-                <dt>恢复饱食度</dt>
+                <dt>🍎 恢复饱食度</dt>
                 <dd>{{ meal.hunger_restored }} 点</dd>
-                
-                <dt>饱和度</dt>
+
+                <dt>⚡ 饱和度</dt>
                 <dd>{{ meal.saturation }}</dd>
-                
+
                 {% if meal.description %}
-                <dt>描述</dt>
+                <dt>📖 描述</dt>
                 <dd class="description-text">{{ meal.description }}</dd>
                 {% endif %}
             </dl>
 
             <div class="like-section">
-                <button class="like-btn" 
-                        data-type="meal" 
+                <button class="like-btn"
+                        data-type="meal"
                         data-id="{{ meal.id }}"
                         aria-label="点赞此菜品"
                         {% if not current_user.is_authenticated %}disabled title="请先登录"{% endif %}>
@@ -43,7 +49,7 @@
 
     {% if ingredients %}
     <section class="ingredients">
-        <h2>所需食材</h2>
+        <h2>🥕 所需食材</h2>
         <ul class="ingredient-list">
             {% for ingredient in ingredients %}
             <li>
@@ -53,7 +59,7 @@
         </ul>
     </section>
     {% endif %}
-</article>
+</section>
 {% endblock %}
 
 {% block extra_scripts %}

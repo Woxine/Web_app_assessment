@@ -3,18 +3,19 @@
 {% block title %}搜索 - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
-<article>
+<section>
     <header>
-        <h1>搜索</h1>
+        <h1>🔍 搜索</h1>
+        <p>在 Farmer's Delight 的世界中寻找您想要的作物或菜品！</p>
     </header>
 
     <form method="POST" action="{{ url_for('main.search') }}" class="search-form" role="search">
         {{ form.hidden_tag() }}
-        
+
         <div class="form-group">
             {{ form.keyword.label }}
-            {{ form.keyword(class="form-control", aria_label="搜索关键词", aria_describedby="keyword-help") }}
-            <small id="keyword-help" class="form-text">输入作物或菜品的名称或描述</small>
+            {{ form.keyword(class="form-control", placeholder="输入作物或菜品的名称", aria_label="搜索关键词", aria_describedby="keyword-help") }}
+            <small id="keyword-help" class="form-text">💡 输入作物或菜品的名称或描述</small>
             {% if form.keyword.errors %}
                 <div class="error-message" role="alert">
                     {% for error in form.keyword.errors %}
@@ -48,7 +49,7 @@
 
     {% if results is defined %}
         <section class="search-results">
-            <h2>搜索结果</h2>
+            <h2>📋 搜索结果</h2>
             {% if results %}
                 <div class="results-grid">
                     {% for item in results %}
@@ -57,31 +58,38 @@
                                 {% if item.image_url %}
                                     <img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">
                                 {% else %}
-                                    <div class="placeholder-image">无图片</div>
+                                    <div class="placeholder-image">
+                                        <span>🌿</span>
+                                        <p>暂无图片</p>
+                                    </div>
                                 {% endif %}
                                 <h3><a href="{{ url_for('main.crop_detail', id=item.id) }}">{{ item.name }}</a></h3>
-                                <p class="crop-stats">恢复饱食度: {{ item.hunger_points }}</p>
+                                <p class="crop-stats">🍎 恢复饱食度: {{ item.hunger_points }}</p>
                             </article>
                         {% else %}
                             <article class="meal-card">
                                 {% if item.image_url %}
                                     <img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">
                                 {% else %}
-                                    <div class="placeholder-image">无图片</div>
+                                    <div class="placeholder-image">
+                                        <span>🍽️</span>
+                                        <p>暂无图片</p>
+                                    </div>
                                 {% endif %}
                                 <h3><a href="{{ url_for('main.meal_detail', id=item.id) }}">{{ item.name }}</a></h3>
-                                <p class="meal-stats">恢复饱食度: {{ item.hunger_restored }}</p>
+                                <p class="meal-stats">🍎 恢复饱食度: {{ item.hunger_restored }}</p>
                             </article>
                         {% endif %}
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="no-results" role="alert">
-                    <p>未找到相关结果。请尝试其他关键词。</p>
+                    <h3>🔍 未找到相关结果</h3>
+                    <p>请尝试其他关键词或检查拼写。</p>
                 </div>
             {% endif %}
         </section>
     {% endif %}
-</article>
+</section>
 {% endblock %}
 

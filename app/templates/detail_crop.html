@@ -3,31 +3,37 @@
 {% block title %}{{ crop.name }} - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
-<article>
+<section>
     <header>
-        <h1>{{ crop.name }}</h1>
+        <h1>🌱 {{ crop.name }}</h1>
+        <p>探索这个作物的详细信息和相关菜品！</p>
     </header>
 
     <div class="detail-content">
         {% if crop.image_url %}
             <img src="{{ crop.image_url }}" alt="{{ crop.name }}" class="detail-image" loading="lazy">
+        {% else %}
+            <div class="placeholder-image" style="width: 100%; height: 350px; border-radius: var(--border-radius);">
+                <span style="font-size: 4rem;">🌿</span>
+                <p>暂无图片</p>
+            </div>
         {% endif %}
 
         <div class="detail-info">
-            <h2>基本信息</h2>
+            <h2>📋 基本信息</h2>
             <dl>
-                <dt>恢复饱食度</dt>
+                <dt>🍎 恢复饱食度</dt>
                 <dd>{{ crop.hunger_points }}</dd>
-                
+
                 {% if crop.description %}
-                <dt>描述</dt>
+                <dt>📖 描述</dt>
                 <dd class="description-text">{{ crop.description }}</dd>
                 {% endif %}
             </dl>
 
             <div class="like-section">
-                <button class="like-btn" 
-                        data-type="crop" 
+                <button class="like-btn"
+                        data-type="crop"
                         data-id="{{ crop.id }}"
                         aria-label="点赞此作物"
                         {% if not current_user.is_authenticated %}disabled title="请先登录"{% endif %}>
@@ -40,14 +46,17 @@
 
     {% if related_meals %}
     <section class="related-meals">
-        <h2>使用此作物的菜品</h2>
+        <h2>🍽️ 使用此作物的菜品</h2>
         <div class="meal-grid">
             {% for meal in related_meals %}
             <article class="meal-card">
                 {% if meal.image_url %}
                     <img src="{{ meal.image_url }}" alt="{{ meal.name }}" loading="lazy">
                 {% else %}
-                    <div class="placeholder-image">无图片</div>
+                    <div class="placeholder-image">
+                        <span>🍽️</span>
+                        <p>暂无图片</p>
+                    </div>
                 {% endif %}
                 <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>
             </article>
@@ -55,7 +64,7 @@
         </div>
     </section>
     {% endif %}
-</article>
+</section>
 {% endblock %}
 
 {% block extra_scripts %}

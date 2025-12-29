@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from flask_admin import Admin
 from flask_migrate import Migrate
+from flask_babel import Babel
 import os
 
 # 初始化扩展
@@ -15,6 +16,7 @@ login_manager = LoginManager()
 csrf = CSRFProtect()
 admin = Admin(name="Farmer's Delight Wiki")
 migrate = Migrate()
+babel = Babel()
 
 
 def create_app(config_name=None):
@@ -41,6 +43,7 @@ def create_app(config_name=None):
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    babel.init_app(app)
     admin.init_app(app)
     migrate.init_app(app, db)
     
