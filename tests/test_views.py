@@ -47,7 +47,7 @@ class ViewTestCase(unittest.TestCase):
         
         response = self.client.get(f'/crop/{crop.id}')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'测试作物', response.data)
+        self.assertIn(b'test corps', response.data)
     
     def test_meal_detail(self):
         """测试菜品详情页"""
@@ -57,7 +57,7 @@ class ViewTestCase(unittest.TestCase):
         
         response = self.client.get(f'/meal/{meal.id}')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'测试菜品', response.data)
+        self.assertIn(b'test meal', response.data)
     
     def test_search_page(self):
         """测试搜索页"""
