@@ -21,6 +21,12 @@ function initLikeButtons() {
 }
 
 function likeItem(type, id, buttonElement) {
+    // 防止重复点击
+    if (buttonElement.getAttribute('data-processing') === 'true') {
+        return;
+    }
+    buttonElement.setAttribute('data-processing', 'true');
+    
     const url = `/api/like/${type}/${id}`;
     
     // 获取 CSRF token (从全局变量或表单中)
@@ -67,6 +73,10 @@ function likeItem(type, id, buttonElement) {
     .catch(error => {
         console.error('Error:', error);
         alert('网络错误，请稍后重试');
+    })
+    .finally(() => {
+        // 无论成功或失败，都移除处理标志
+        buttonElement.removeAttribute('data-processing');
     });
 }
 
