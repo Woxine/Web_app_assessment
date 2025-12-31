@@ -1,157 +1,163 @@
 """
-Flask-WTF 表单定义
+Flask-WTF Form Definitions
 """
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, \
+from wtforms import (
+    StringField, PasswordField, SubmitField, TextAreaField,
     SelectField, RadioField, BooleanField, IntegerField, FloatField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, \
-    ValidationError, NumberRange, Optional
+)
+from wtforms.validators import (
+    DataRequired, Email, EqualTo, Length, ValidationError, NumberRange
+)
 from app.models import User
 
 
 class RegistrationForm(FlaskForm):
-    """注册表单（包含至少5种控件）"""
-    # 1. 文本输入框
-    username = StringField('用户名', validators=[
-        DataRequired(message='请输入用户名'),
-        Length(min=3, max=20, message='用户名长度必须在3-20个字符之间')
+    """Registration Form"""
+    # 1. Text Input Field
+    username = StringField('Username', validators=[
+        DataRequired(message='Please enter username'),
+        Length(min=3, max=20, message='Username must be between 3-20 characters')
     ])
-    
-    # 1. 文本输入框
-    email = StringField('邮箱', validators=[
-        DataRequired(message='请输入邮箱'),
-        Email(message='请输入有效的邮箱地址')
+
+    # 1. Text Input Field
+    email = StringField('Email', validators=[
+        DataRequired(message='Please enter email'),
+        Email(message='Please enter a valid email address')
     ])
-    
-    # 2. 密码输入框
-    password = PasswordField('密码', validators=[
-        DataRequired(message='请输入密码'),
-        Length(min=8, message='密码长度至少为8个字符')
+
+    # 2. Password Input Field
+    password = PasswordField('Password', validators=[
+        DataRequired(message='Please enter password'),
+        Length(min=8, message='Password must be at least 8 characters')
     ])
-    
-    # 2. 密码输入框
-    password2 = PasswordField('确认密码', validators=[
-        DataRequired(message='请确认密码'),
-        EqualTo('password', message='两次输入的密码不一致')
+
+    # 2. Password Input Field
+    password2 = PasswordField('Confirm Password', validators=[
+        DataRequired(message='Please confirm password'),
+        EqualTo('password', message='Passwords do not match')
     ])
-    
-    # 6. 复选框
-    agree_terms = BooleanField('我同意服务条款', validators=[
-        DataRequired(message='请同意服务条款')
+
+    # 6. Checkbox
+    agree_terms = BooleanField('I agree to the terms of service', validators=[
+        DataRequired(message='Please agree to the terms of service')
     ])
-    
-    # 3. 提交按钮
-    submit = SubmitField('注册')
-    
+
+    # 3. Submit Button
+    submit = SubmitField('Register')
+
     def validate_username(self, username):
-        """验证用户名唯一性"""
+        """Validate username uniqueness"""
         user = User.query.filter_by(username=username.data).first()
         if user:
-            raise ValidationError('该用户名已被使用，请选择其他用户名。')
-    
+            raise ValidationError(
+                'This username is already taken, please choose another.')
+
     def validate_email(self, email):
-        """验证邮箱唯一性"""
+        """Validate email uniqueness"""
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError('该邮箱已被注册，请使用其他邮箱。')
-    
+            raise ValidationError(
+                'This email is already registered, please use another.')
+
     def validate_password(self, password):
-        """验证密码强度"""
+        """Validate password strength"""
         pwd = password.data
         if len(pwd) < 8:
-            raise ValidationError('密码长度至少为8个字符。')
+            raise ValidationError('Password must be at least 8 characters.')
         if not any(c.isalpha() for c in pwd):
-            raise ValidationError('密码必须包含至少一个字母。')
+            raise ValidationError('Password must contain at least one letter.')
         if not any(c.isdigit() for c in pwd):
-            raise ValidationError('密码必须包含至少一个数字。')
+            raise ValidationError('Password must contain at least one number.')
 
 
 class LoginForm(FlaskForm):
-    """登录表单"""
-    username = StringField('用户名或邮箱', validators=[
-        DataRequired(message='请输入用户名或邮箱')
+    """Login Form"""
+    username = StringField('Username or Email', validators=[
+        DataRequired(message='Please enter username or email')
     ])
-    password = PasswordField('密码', validators=[
-        DataRequired(message='请输入密码')
+    password = PasswordField('Password', validators=[
+        DataRequired(message='Please enter password')
     ])
-    remember_me = BooleanField('记住我')
-    submit = SubmitField('登录')
+    remember_me = BooleanField('Remember me')
+    submit = SubmitField('Login')
 
 
 class SearchForm(FlaskForm):
-    """搜索表单（包含多种控件）"""
-    # 1. 文本输入框
-    keyword = StringField('搜索关键词', validators=[
-        DataRequired(message='请输入搜索关键词')
+    """Search Form (with multiple controls)"""
+    # 1. Text Input Field
+    keyword = StringField('Search Keyword', validators=[
+        DataRequired(message='Please enter search keyword')
     ])
-    
-    # 5. 单选按钮
-    search_type = RadioField('搜索类型', 
-        choices=[('all', '全部'), ('crops', '作物'), ('meals', '菜品')],
+
+    # 5. Radio Buttons
+    search_type = RadioField(
+        'Search Type',
+        choices=[('all', 'All'), ('crops', 'Crops'), ('meals', 'Meals')],
         default='all',
         validators=[DataRequired()]
     )
-    
-    # 4. 下拉列表（多选项）
-    sort_by = SelectField('排序方式',
+
+    # 4. Dropdown List (Multiple Options)
+    sort_by = SelectField(
+        'Sort By',
         choices=[
-            ('name', '按名称 (A-Z)'),
-            ('hunger', '按恢复饱食度 (降序)'),
-            ('likes', '按点赞数 (降序)')
+            ('name', 'By Name (A-Z)'),
+            ('hunger', 'By Hunger Restored (Desc)'),
+            ('likes', 'By Likes (Desc)')
         ],
         default='name',
         validators=[DataRequired()]
     )
-    
-    # 3. 提交按钮
-    submit = SubmitField('搜索')
+
+    # 3. Submit Button
+    submit = SubmitField('Search')
 
 
 class ProfileEditForm(FlaskForm):
-    """用户资料编辑表单"""
-    username = StringField('用户名', validators=[
+    """User Profile Edit Form"""
+    username = StringField('Username', validators=[
         DataRequired(),
         Length(min=3, max=20)
     ])
-    email = StringField('邮箱', validators=[
+    email = StringField('Email', validators=[
         DataRequired(),
         Email()
     ])
-    submit = SubmitField('保存更改')
-    
+    submit = SubmitField('Save Changes')
+
     def __init__(self, original_username, original_email, *args, **kwargs):
         super(ProfileEditForm, self).__init__(*args, **kwargs)
         self.original_username = original_username
         self.original_email = original_email
-    
+
     def validate_username(self, username):
         if username.data != self.original_username:
             user = User.query.filter_by(username=username.data).first()
             if user:
-                raise ValidationError('该用户名已被使用。')
-    
+                raise ValidationError('This username is already taken.')
+
     def validate_email(self, email):
         if email.data != self.original_email:
             user = User.query.filter_by(email=email.data).first()
             if user:
-                raise ValidationError('该邮箱已被注册。')
+                raise ValidationError('This email is already registered.')
 
 
 class CropForm(FlaskForm):
-    """作物表单（用于 Flask-Admin 或手动添加）"""
-    name = StringField('名称', validators=[DataRequired(), Length(max=100)])
-    description = TextAreaField('描述')
-    image_url = StringField('图片URL')
-    hunger_points = IntegerField('恢复饱食度', validators=[NumberRange(min=0)])
-    submit = SubmitField('提交')
+    """Crop Form (for Flask-Admin or manual addition)"""
+    name = StringField('Name', validators=[DataRequired(), Length(max=100)])
+    description = TextAreaField('Description')
+    image_url = StringField('Image URL')
+    hunger_points = IntegerField('Hunger Restored', validators=[NumberRange(min=0)])
+    submit = SubmitField('Submit')
 
 
 class MealForm(FlaskForm):
-    """菜品表单（用于 Flask-Admin 或手动添加）"""
-    name = StringField('名称', validators=[DataRequired(), Length(max=100)])
-    description = TextAreaField('描述')
-    image_url = StringField('图片URL')
-    hunger_restored = IntegerField('恢复饱食度', validators=[NumberRange(min=0)])
-    saturation = FloatField('饱和度', validators=[NumberRange(min=0.0)])
-    submit = SubmitField('提交')
-
+    """Meal Form (for Flask-Admin or manual addition)"""
+    name = StringField('Name', validators=[DataRequired(), Length(max=100)])
+    description = TextAreaField('Description')
+    image_url = StringField('Image URL')
+    hunger_restored = IntegerField('Hunger Restored', validators=[NumberRange(min=0)])
+    saturation = FloatField('Saturation', validators=[NumberRange(min=0.0)])
+    submit = SubmitField('Submit')

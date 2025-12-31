@@ -1,5 +1,5 @@
 /**
- * AJAX 点赞功能
+ * AJAX Like Functionality
  */
 
 function initLikeButtons() {
@@ -8,7 +8,7 @@ function initLikeButtons() {
     likeButtons.forEach(button => {
         button.addEventListener('click', function() {
             if (this.disabled) {
-                alert('请先登录以点赞');
+                alert('Please log in to like');
                 return;
             }
             
@@ -21,7 +21,7 @@ function initLikeButtons() {
 }
 
 function likeItem(type, id, buttonElement) {
-    // 防止重复点击
+    // Prevent duplicate clicks
     if (buttonElement.getAttribute('data-processing') === 'true') {
         return;
     }
@@ -29,7 +29,7 @@ function likeItem(type, id, buttonElement) {
     
     const url = `/api/like/${type}/${id}`;
     
-    // 获取 CSRF token (从全局变量或表单中)
+    // Get CSRF token (from global variable or form)
     let token = window.csrfToken || '';
     if (!token) {
         const csrfInput = document.querySelector('input[name="csrf_token"]');
@@ -38,7 +38,7 @@ function likeItem(type, id, buttonElement) {
         }
     }
     
-    // 发送 AJAX 请求
+    // Send AJAX request
     fetch(url, {
         method: 'POST',
         headers: {
@@ -49,13 +49,13 @@ function likeItem(type, id, buttonElement) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('网络响应错误');
+            throw new Error('Network response error');
         }
         return response.json();
     })
     .then(data => {
         if (data.success) {
-            // 更新点赞数和图标
+            // Update like count and icon
             const likeIcon = buttonElement.querySelector('.like-icon');
             const likeCount = buttonElement.querySelector('.like-count');
             
@@ -67,20 +67,20 @@ function likeItem(type, id, buttonElement) {
                 likeCount.textContent = data.likes_count;
             }
         } else {
-            alert('操作失败，请重试');
+            alert('Operation failed, please try again');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('网络错误，请稍后重试');
+        alert('Network error, please try again later');
     })
     .finally(() => {
-        // 无论成功或失败，都移除处理标志
+        // Remove processing flag regardless of success or failure
         buttonElement.removeAttribute('data-processing');
     });
 }
 
-// 页面加载完成后初始化
+// Initialize after page load
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initLikeButtons);
 } else {

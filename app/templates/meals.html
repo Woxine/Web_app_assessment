@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}菜品列表 - Farmer's Delight Wiki{% endblock %}
+{% block title %}Meals List - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
 <section>
     <header>
-        <h1>🍽️ 菜品列表</h1>
-        <p>探索 Farmer's Delight 中所有美味的菜品，从简单的沙拉到复杂的料理，应有尽有！</p>
+        <h1>🍽️ Meals List</h1>
+        <p>Explore all the delicious meals in Farmer's Delight, from simple salads to complex dishes, everything you need!</p>
     </header>
 
     {% if meals %}
@@ -18,13 +18,13 @@
                 {% else %}
                     <div class="placeholder-image">
                         <span>🍽️</span>
-                        <p>暂无图片</p>
+                        <p>No image available</p>
                     </div>
                 {% endif %}
                 <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>
                 <p class="meal-stats">
-                    <span>🍎 恢复饱食度: {{ meal.hunger_restored }}</span>
-                    <span>⚡ 饱和度: {{ meal.saturation }}</span>
+                    <span>🍎 Hunger Restored: {{ meal.hunger_restored }}</span>
+                    <span>⚡ Saturation: {{ meal.saturation }}</span>
                 </p>
                 {% if meal.description %}
                     <p class="meal-description">{{ meal.description[:100] }}{% if meal.description|length > 100 %}...{% endif %}</p>
@@ -33,23 +33,23 @@
             {% endfor %}
         </div>
 
-        <nav class="pagination" role="navigation" aria-label="分页导航">
+        <nav class="pagination" role="navigation" aria-label="Pagination navigation">
             {% if pagination.has_prev %}
-                <a href="{{ url_for('main.meals', page=pagination.prev_num) }}" aria-label="上一页">⬅️ 上一页</a>
+                <a href="{{ url_for('main.meals', page=pagination.prev_num) }}" aria-label="Previous page">⬅️ Previous page</a>
             {% endif %}
 
             <span class="page-info">
-                📄 第 {{ pagination.page }} 页，共 {{ pagination.pages }} 页
+                📄 Page {{ pagination.page }} of {{ pagination.pages }}
             </span>
 
             {% if pagination.has_next %}
-                <a href="{{ url_for('main.meals', page=pagination.next_num) }}" aria-label="下一页">下一页 ➡️</a>
+                <a href="{{ url_for('main.meals', page=pagination.next_num) }}" aria-label="Next page">Next page ➡️</a>
             {% endif %}
         </nav>
     {% else %}
         <div class="no-results">
-            <h3>🍽️ 暂无菜品数据</h3>
-            <p>菜品数据正在加载中，请稍后再试！</p>
+            <h3>🍽️ No meal data available</h3>
+            <p>Meal data is loading, please try again later!</p>
         </div>
     {% endif %}
 </section>

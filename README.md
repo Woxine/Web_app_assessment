@@ -1,39 +1,39 @@
 # Farmer's Delight Wiki
 
-基于 Flask 的 Minecraft 模组 "Farmer's Delight" 百科类 Web 应用。
+Flask-based encyclopedia web application for the Minecraft mod "Farmer's Delight".
 
-## 功能特性
+## Features
 
-- ✅ 作物和菜品信息浏览（分页展示）
-- ✅ 搜索功能（支持关键词检索和多种排序方式）
-- ✅ 用户注册/登录系统（密码加密）
-- ✅ AJAX 点赞功能（无刷新交互）
-- ✅ 排行榜（基于点赞数）
-- ✅ Flask-Admin 后台管理
-- ✅ 响应式设计（WCAG 兼容）
-- ✅ 安全措施（SQL 注入、XSS、CSRF 防护）
-- ✅ 日志记录系统
+- ✅ Browse crop and meal information (paginated display)
+- ✅ Search functionality (supports keyword search and multiple sorting options)
+- ✅ User registration/login system (password encryption)
+- ✅ AJAX like functionality (no-refresh interaction)
+- ✅ Rankings (based on like count)
+- ✅ Flask-Admin backend management
+- ✅ Responsive design (WCAG compatible)
+- ✅ Security measures (SQL injection, XSS, CSRF protection)
+- ✅ Logging system
 
-## 技术栈
+## Tech Stack
 
-- **后端**: Python 3 + Flask
-- **数据库**: Flask-SQLAlchemy (SQLite，支持 MySQL)
-- **前端**: Jinja2 + HTML5 + CSS3
-- **表单**: Flask-WTF (CSRF 保护)
-- **认证**: Flask-Login
-- **管理**: Flask-Admin
-- **迁移**: Flask-Migrate
+- **Backend**: Python 3 + Flask
+- **Database**: Flask-SQLAlchemy (SQLite, supports MySQL)
+- **Frontend**: Jinja2 + HTML5 + CSS3
+- **Forms**: Flask-WTF (CSRF protection)
+- **Authentication**: Flask-Login
+- **Management**: Flask-Admin
+- **Migration**: Flask-Migrate
 
-## 安装步骤
+## Installation Steps
 
-### 1. 克隆项目
+### 1. Clone the project
 
 ```bash
 git clone <repository-url>
 cd cw2
 ```
 
-### 2. 创建虚拟环境
+### 2. Create virtual environment
 
 ```bash
 python -m venv venv
@@ -43,24 +43,24 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. 安装依赖
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. 配置环境变量
+### 4. Configure environment variables
 
-创建 `instance/config.py` 文件：
+Create `instance/config.py` file:
 
 ```python
 SECRET_KEY = 'your-secret-key-here'
-DATABASE_URL = 'sqlite:///app.db'  # 默认使用 SQLite
-# 如需使用 MySQL，可取消注释并修改以下行：
+DATABASE_URL = 'sqlite:///app.db'  # Default uses SQLite
+# To use MySQL, uncomment and modify the following line:
 # DATABASE_URL = 'mysql://user:password@localhost/farmers_delight'
 ```
 
-### 5. 初始化数据库
+### 5. Initialize database
 
 ```bash
 flask db init
@@ -68,101 +68,101 @@ flask db migrate -m "Initial migration"
 flask db upgrade
 ```
 
-### 6. 运行应用
+### 6. Run the application
 
 ```bash
 python run.py
 ```
 
-访问 http://localhost:5000
+Visit http://localhost:5000
 
-## 数据库模型
+## Database Models
 
-### 核心模型
+### Core Models
 
-- **User**: 用户表（id, username, email, password_hash）
-- **Crop**: 作物表（id, name, description, image_url, hunger_points）
-- **Meal**: 菜品表（id, name, description, image_url, hunger_restored, saturation）
+- **User**: User table (id, username, email, password_hash)
+- **Crop**: Crop table (id, name, description, image_url, hunger_points)
+- **Meal**: Meal table (id, name, description, image_url, hunger_restored, saturation)
 
-### 多对多关系
+### Many-to-Many Relationships
 
-1. **meal_ingredients**: Meal ↔ Crop（菜品-食材关系）
-2. **user_likes_crops**: User ↔ Crop（用户点赞作物）
-3. **user_likes_meals**: User ↔ Meal（用户点赞菜品）
+1. **meal_ingredients**: Meal ↔ Crop (meal-ingredient relationship)
+2. **user_likes_crops**: User ↔ Crop (user likes crops)
+3. **user_likes_meals**: User ↔ Meal (user likes meals)
 
-## 表单控件类型
+## Form Control Types
 
-满足至少 5 种表单控件要求：
+Meets at least 5 form control requirements:
 
-1. 文本输入框 (TextInput)
-2. 密码输入框 (PasswordField)
-3. 提交按钮 (SubmitField)
-4. 下拉列表 (SelectField)
-5. 单选按钮 (RadioField)
-6. 复选框 (BooleanField)
-7. 文本域 (TextAreaField)
+1. Text input (TextInput)
+2. Password input (PasswordField)
+3. Submit button (SubmitField)
+4. Dropdown list (SelectField)
+5. Radio button (RadioField)
+6. Checkbox (BooleanField)
+7. Text area (TextAreaField)
 
-## 运行测试
+## Running Tests
 
 ```bash
 python -m pytest tests/
-# 或
+# or
 python -m unittest discover tests
 ```
 
-## 部署到 PythonAnywhere
+## Deploy to PythonAnywhere
 
-1. 上传项目文件到 PythonAnywhere
-2. 配置 WSGI 文件（参考 `wsgi.py`）
-3. 设置环境变量（SECRET_KEY，DATABASE_URL 可选，默认使用 SQLite）
-4. 运行数据库迁移
-5. 配置静态文件路径
+1. Upload project files to PythonAnywhere
+2. Configure WSGI file (refer to `wsgi.py`)
+3. Set environment variables (SECRET_KEY, DATABASE_URL optional, defaults to SQLite)
+4. Run database migrations
+5. Configure static file paths
 
-## 安全措施
+## Security Measures
 
-- ✅ SQL 注入防护：使用 SQLAlchemy ORM
-- ✅ XSS 防护：Jinja2 自动转义
-- ✅ CSRF 防护：Flask-WTF CSRF Token
-- ✅ 密码加密：Werkzeug security
+- ✅ SQL Injection Protection: Using SQLAlchemy ORM
+- ✅ XSS Protection: Jinja2 auto-escaping
+- ✅ CSRF Protection: Flask-WTF CSRF Token
+- ✅ Password Encryption: Werkzeug security
 
-## 可访问性
+## Accessibility
 
-- ✅ 语义化 HTML5（nav, main, article, footer）
-- ✅ ARIA 标签（aria-label, aria-describedby）
-- ✅ 颜色对比度符合 WCAG AA 级标准
+- ✅ Semantic HTML5 (nav, main, article, footer)
+- ✅ ARIA labels (aria-label, aria-describedby)
+- ✅ Color contrast meets WCAG AA level standards
 
-## 项目结构
+## Project Structure
 
 ```
 cw2/
 ├── app/
-│   ├── __init__.py          # Flask 应用工厂
-│   ├── models.py            # 数据模型
-│   ├── forms.py             # Flask-WTF 表单
-│   ├── views.py             # 主视图路由
-│   ├── auth.py              # 认证路由
-│   ├── admin.py             # Flask-Admin 配置
-│   ├── utils.py             # 工具函数
-│   ├── static/              # 静态文件
+│   ├── __init__.py          # Flask application factory
+│   ├── models.py            # Data models
+│   ├── forms.py             # Flask-WTF forms
+│   ├── views.py             # Main view routes
+│   ├── auth.py              # Authentication routes
+│   ├── admin.py             # Flask-Admin configuration
+│   ├── utils.py             # Utility functions
+│   ├── static/              # Static files
 │   │   ├── css/
 │   │   ├── js/
 │   │   └── images/
-│   └── templates/           # Jinja2 模板
-├── tests/                   # 单元测试
-├── migrations/              # 数据库迁移
-├── instance/                # 实例配置
-├── logs/                    # 日志文件
-├── config.py                # 配置文件
-├── run.py                   # 应用入口
-├── wsgi.py                  # WSGI 配置
-└── requirements.txt         # 依赖列表
+│   └── templates/           # Jinja2 templates
+├── tests/                   # Unit tests
+├── migrations/              # Database migrations
+├── instance/                # Instance configuration
+├── logs/                    # Log files
+├── config.py                # Configuration file
+├── run.py                   # Application entry point
+├── wsgi.py                  # WSGI configuration
+└── requirements.txt         # Dependency list
 ```
 
-## 许可证
+## License
 
-本项目为课程作业项目。
+This project is a coursework project.
 
-## 作者
+## Author
 
 Leeds University - XJCO2011 Web Application Development
 

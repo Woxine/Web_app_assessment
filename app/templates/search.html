@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}搜索 - Farmer's Delight Wiki{% endblock %}
+{% block title %}Search - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
 <section>
     <header>
-        <h1>🔍 搜索</h1>
-        <p>在 Farmer's Delight 的世界中寻找您想要的作物或菜品！</p>
+        <h1>🔍 Search</h1>
+        <p>Find the crops or meals you want in the world of Farmer's Delight!</p>
     </header>
 
     <form method="POST" action="{{ url_for('main.search') }}" class="search-form" role="search">
@@ -14,8 +14,8 @@
 
         <div class="form-group">
             {{ form.keyword.label }}
-            {{ form.keyword(class="form-control", placeholder="输入作物或菜品的名称", aria_label="搜索关键词", aria_describedby="keyword-help") }}
-            <small id="keyword-help" class="form-text">💡 输入作物或菜品的名称或描述</small>
+            {{ form.keyword(class="form-control", placeholder="Enter the name of a crop or meal", aria_label="Search keyword", aria_describedby="keyword-help") }}
+            <small id="keyword-help" class="form-text">💡 Enter the name or description of a crop or meal</small>
             {% if form.keyword.errors %}
                 <div class="error-message" role="alert">
                     {% for error in form.keyword.errors %}
@@ -27,7 +27,7 @@
 
         <div class="form-group">
             {{ form.search_type.label }}
-            <div class="radio-group" role="radiogroup" aria-label="搜索类型">
+            <div class="radio-group" role="radiogroup" aria-label="Search type">
                 {% for subfield in form.search_type %}
                     <label>
                         {{ subfield }}
@@ -39,7 +39,7 @@
 
         <div class="form-group">
             {{ form.sort_by.label }}
-            {{ form.sort_by(class="form-control", aria_label="排序方式") }}
+            {{ form.sort_by(class="form-control", aria_label="Sort by") }}
         </div>
 
         <div class="form-group">
@@ -49,7 +49,7 @@
 
     {% if results is defined %}
         <section class="search-results">
-            <h2>📋 搜索结果</h2>
+            <h2>📋 Search Results</h2>
             {% if results %}
                 <div class="results-grid">
                     {% for item in results %}
@@ -60,11 +60,11 @@
                                 {% else %}
                                     <div class="placeholder-image">
                                         <span>🌿</span>
-                                        <p>暂无图片</p>
+                                        <p>No image available</p>
                                     </div>
                                 {% endif %}
                                 <h3><a href="{{ url_for('main.crop_detail', id=item.id) }}">{{ item.name }}</a></h3>
-                                <p class="crop-stats">🍎 恢复饱食度: {{ item.hunger_points }}</p>
+                                <p class="crop-stats">🍎 Hunger Restored: {{ item.hunger_points }}</p>
                             </article>
                         {% else %}
                             <article class="meal-card">
@@ -73,19 +73,19 @@
                                 {% else %}
                                     <div class="placeholder-image">
                                         <span>🍽️</span>
-                                        <p>暂无图片</p>
+                                        <p>No image available</p>
                                     </div>
                                 {% endif %}
                                 <h3><a href="{{ url_for('main.meal_detail', id=item.id) }}">{{ item.name }}</a></h3>
-                                <p class="meal-stats">🍎 恢复饱食度: {{ item.hunger_restored }}</p>
+                                <p class="meal-stats">🍎 Hunger Restored: {{ item.hunger_restored }}</p>
                             </article>
                         {% endif %}
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="no-results" role="alert">
-                    <h3>🔍 未找到相关结果</h3>
-                    <p>请尝试其他关键词或检查拼写。</p>
+                    <h3>🔍 No relevant results found</h3>
+                    <p>Please try other keywords or check spelling.</p>
                 </div>
             {% endif %}
         </section>

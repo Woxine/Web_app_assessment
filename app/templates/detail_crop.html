@@ -6,7 +6,7 @@
 <section>
     <header>
         <h1>🌱 {{ crop.name }}</h1>
-        <p>探索这个作物的详细信息和相关菜品！</p>
+        <p>Explore the details of this crop and related meals!</p>
     </header>
 
     <div class="detail-content">
@@ -15,18 +15,18 @@
         {% else %}
             <div class="placeholder-image" style="width: 100%; height: 350px; border-radius: var(--border-radius);">
                 <span style="font-size: 4rem;">🌿</span>
-                <p>暂无图片</p>
+                <p>No image available</p>
             </div>
         {% endif %}
 
         <div class="detail-info">
-            <h2>📋 基本信息</h2>
+            <h2>📋 Basic Information</h2>
             <dl>
-                <dt>🍎 恢复饱食度</dt>
+                <dt>🍎 Hunger Restored</dt>
                 <dd>{{ crop.hunger_points }}</dd>
 
                 {% if crop.description %}
-                <dt>📖 描述</dt>
+                <dt>📖 Description</dt>
                 <dd class="description-text">{{ crop.description }}</dd>
                 {% endif %}
             </dl>
@@ -35,8 +35,8 @@
                 <button class="like-btn"
                         data-type="crop"
                         data-id="{{ crop.id }}"
-                        aria-label="点赞此作物"
-                        {% if not current_user.is_authenticated %}disabled title="请先登录"{% endif %}>
+                        aria-label="Like this crop"
+                        {% if not current_user.is_authenticated %}disabled title="Please log in first"{% endif %}>
                     <span class="like-icon">{% if is_liked %}❤️{% else %}🤍{% endif %}</span>
                     <span class="like-count">{{ crop.get_likes_count() }}</span>
                 </button>
@@ -46,7 +46,7 @@
 
     {% if related_meals %}
     <section class="related-meals">
-        <h2>🍽️ 使用此作物的菜品</h2>
+        <h2>🍽️ Meals using this crop</h2>
         <div class="meal-grid">
             {% for meal in related_meals %}
             <article class="meal-card">
@@ -55,7 +55,7 @@
                 {% else %}
                     <div class="placeholder-image">
                         <span>🍽️</span>
-                        <p>暂无图片</p>
+                        <p>No image available</p>
                     </div>
                 {% endif %}
                 <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>

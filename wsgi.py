@@ -1,10 +1,10 @@
 """
-WSGI 配置文件（用于 PythonAnywhere 部署）
+WSGI Configuration File (for PythonAnywhere deployment)
 """
 import sys
 
-# 添加项目路径到 Python 路径
-path = '/home/yourusername/cw2'  # 修改为你的实际路径
+# Add project path to Python path
+path = '/home/yourusername/cw2'  # Change to your actual path
 if path not in sys.path:
     sys.path.insert(0, path)
 

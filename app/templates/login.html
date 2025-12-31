@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}登录 - Farmer's Delight Wiki{% endblock %}
+{% block title %}Login - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
 <section>
     <header>
-        <h1>🔐 用户登录</h1>
-        <p>欢迎回来！请登录您的账号继续探索 Farmer's Delight 的精彩世界。</p>
+        <h1>🔐 User Login</h1>
+        <p>Welcome back! Please log in to your account to continue exploring the wonderful world of Farmer's Delight.</p>
     </header>
 
     <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
@@ -14,7 +14,7 @@
 
         <div class="form-group">
             {{ form.username.label }}
-            {{ form.username(class="form-control", placeholder="请输入用户名或邮箱", aria_label="用户名或邮箱", aria_required="true") }}
+            {{ form.username(class="form-control", placeholder="Enter username or email", aria_label="Username or Email", aria_required="true") }}
             {% if form.username.errors %}
                 <div class="error-message" role="alert">
                     {% for error in form.username.errors %}
@@ -26,7 +26,7 @@
 
         <div class="form-group">
             {{ form.password.label }}
-            {{ form.password(class="form-control", placeholder="请输入密码", aria_label="密码", aria_required="true") }}
+            {{ form.password(class="form-control", placeholder="Enter password", aria_label="Password", aria_required="true") }}
             {% if form.password.errors %}
                 <div class="error-message" role="alert">
                     {% for error in form.password.errors %}
@@ -49,7 +49,7 @@
     </form>
 
     <p class="auth-link">
-        还没有账号？<a href="{{ url_for('auth.register') }}">✨ 立即注册</a>
+        Don't have an account?<a href="{{ url_for('auth.register') }}">✨ Register now</a>
     </p>
 </section>
 {% endblock %}

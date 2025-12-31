@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}首页 - Farmer's Delight Wiki{% endblock %}
+{% block title %}Home - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
 <section class="intro">
-    <h2>🌟 欢迎来到 Farmer's Delight Wiki</h2>
-    <p>Farmer's Delight 是一个为 Minecraft 添加了丰富农业和烹饪系统的模组。本 Wiki 提供了详细的作物、食材和烹饪菜品信息，帮助玩家更好地体验这个模组。</p>
-    <p>在这里，你可以发现各种美味的菜品配方，学习如何种植稀有作物，以及与其他玩家分享你的烹饪心得！</p>
+    <h2>🌟 Welcome to Farmer's Delight Wiki</h2>
+    <p>Farmer's Delight is a mod that adds rich farming and cooking systems to Minecraft. This Wiki provides detailed information on crops, ingredients, and cooking recipes to help players better experience the mod.</p>
+    <p>Here, you can discover delicious recipe combinations, learn how to grow rare crops, and share your cooking tips with other players!</p>
 </section>
 
 <section class="top-meals">
-    <h2>🔥 最受欢迎的菜品</h2>
+    <h2>🔥 Most Popular Meals</h2>
     {% if top_meals %}
         <div class="meal-grid">
             {% for meal, likes_count in top_meals %}
@@ -20,21 +20,21 @@
                 {% else %}
                     <div class="placeholder-image">
                         <span>🍽️</span>
-                        <p>暂无图片</p>
+                        <p>No image available</p>
                     </div>
                 {% endif %}
                 <h3><a href="{{ url_for('main.meal_detail', id=meal.id) }}">{{ meal.name }}</a></h3>
                 <p class="meal-stats">
-                    <span>🍎 恢复饱食度: {{ meal.hunger_restored }}</span>
-                    <span>❤️ 点赞数: {{ likes_count }}</span>
+                    <span>🍎 Hunger Restored: {{ meal.hunger_restored }}</span>
+                    <span>❤️ Likes: {{ likes_count }}</span>
                 </p>
             </article>
             {% endfor %}
         </div>
     {% else %}
         <div class="no-results">
-            <h3>🍽️ 暂无菜品数据</h3>
-            <p>请先添加一些美味的菜品吧！</p>
+            <h3>🍽️ No meal data available</h3>
+            <p>Please add some delicious meals first!</p>
         </div>
     {% endif %}
 </section>

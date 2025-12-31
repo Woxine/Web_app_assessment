@@ -1,7 +1,7 @@
 """
 主视图路由
 """
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify
 from app import db
 from app.models import Crop, Meal, User
 from app.forms import SearchForm
@@ -15,21 +15,25 @@ main_bp = Blueprint('main', __name__)
 def index():
     """首页：展示模组简介和最受欢迎的3个菜品"""
     # 使用聚合查询获取最受欢迎的3个菜品（按点赞数）
-    top_meals = db.session.query(
-        Meal,
-        func.count(User.id).label('likes_count')
-    ).join(
-        Meal.liked_by_users
-    ).group_by(
-        Meal.id
-    ).order_by(
-        func.count(User.id).desc()
-    ).limit(3).all()
-    
+    top_meals = (
+        db.session.query(
+            Meal,
+            func.count(User.id).label('likes_count')
+        )
+        .join(Meal.liked_by_users)
+        .group_by(Meal.id)
+        .order_by(func.count(User.id).desc())
+        .limit(3)
+        .all()
+    )
+
     # 如果没有点赞数据，则按创建时间降序获取3个菜品
     if not top_meals:
-        top_meals = [(meal, 0) for meal in Meal.query.order_by(Meal.created_at.desc()).limit(3).all()]
-    
+        top_meals = [
+            (meal, 0) for meal in
+            Meal.query.order_by(Meal.created_at.desc()).limit(3).all()
+        ]
+
     return render_template('index.html', top_meals=top_meals)
 
 
@@ -64,7 +68,12 @@ def crop_detail(id):
     is_liked = False
     if current_user.is_authenticated:
         is_liked = crop in current_user.liked_crops.all()
-    return render_template('detail_crop.html', crop=crop, related_meals=related_meals, is_liked=is_liked)
+    return render_template(
+        'detail_crop.html',
+        crop=crop,
+        related_meals=related_meals,
+        is_liked=is_liked
+    )
 
 
 @main_bp.route('/meal/<int:id>')
@@ -76,7 +85,12 @@ def meal_detail(id):
     is_liked = False
     if current_user.is_authenticated:
         is_liked = meal in current_user.liked_meals.all()
-    return render_template('detail_meal.html', meal=meal, ingredients=ingredients, is_liked=is_liked)
+    return render_template(
+        'detail_meal.html',
+        meal=meal,
+        ingredients=ingredients,
+        is_liked=is_liked
+    )
 
 
 @main_bp.route('/search', methods=['GET', 'POST'])
@@ -84,12 +98,12 @@ def search():
     """搜索功能"""
     form = SearchForm()
     results = []
-    
+
     if form.validate_on_submit():
         keyword = form.keyword.data
         search_type = form.search_type.data
         sort_by = form.sort_by.data
-        
+
         # 构建查询
         if search_type == 'crops':
             query = Crop.query.filter(
@@ -120,20 +134,35 @@ def search():
                 )
             ).all()
             results = list(crops) + list(meals)
-            
+
             # 排序
             if sort_by == 'name':
                 results.sort(key=lambda x: x.name)
             elif sort_by == 'hunger':
-                results.sort(key=lambda x: getattr(x, 'hunger_points', getattr(x, 'hunger_restored', 0)), reverse=True)
+                def get_hunger(item):
+                    return getattr(
+                        item, 'hunger_points',
+                        getattr(item, 'hunger_restored', 0)
+                    )
+                results.sort(key=get_hunger, reverse=True)
             elif sort_by == 'likes':
-                results.sort(key=lambda x: x.get_likes_count(), reverse=True)
-            
-            return render_template('search.html', form=form, results=results, keyword=keyword)
-        
+                results.sort(
+                    key=lambda x: x.get_likes_count(),
+                    reverse=True
+                )
+
+            return render_template(
+                'search.html',
+                form=form,
+                results=results,
+                keyword=keyword
+            )
+
         # 对单一类型进行排序
         if sort_by == 'name':
-            query = query.order_by(Crop.name.asc() if search_type == 'crops' else Meal.name.asc())
+            query = query.order_by(
+                Crop.name.asc() if search_type == 'crops' else Meal.name.asc()
+            )
         elif sort_by == 'hunger':
             if search_type == 'crops':
                 query = query.order_by(Crop.hunger_points.desc())
@@ -142,35 +171,48 @@ def search():
         elif sort_by == 'likes':
             # 需要聚合查询
             if search_type == 'crops':
-                query = db.session.query(
-                    Crop,
-                    func.count(User.id).label('likes_count')
-                ).join(
-                    Crop.liked_by_users, isouter=True
-                ).filter(
-                    or_(
-                        Crop.name.contains(keyword),
-                        Crop.description.contains(keyword)
+                query = (
+                    db.session.query(
+                        Crop,
+                        func.count(User.id).label('likes_count')
                     )
-                ).group_by(Crop.id).order_by(func.count(User.id).desc())
+                    .join(Crop.liked_by_users, isouter=True)
+                    .filter(
+                        or_(
+                            Crop.name.contains(keyword),
+                            Crop.description.contains(keyword)
+                        )
+                    )
+                    .group_by(Crop.id)
+                    .order_by(func.count(User.id).desc())
+                )
                 results = [row[0] for row in query.all()]
             else:
-                query = db.session.query(
-                    Meal,
-                    func.count(User.id).label('likes_count')
-                ).join(
-                    Meal.liked_by_users, isouter=True
-                ).filter(
-                    or_(
-                        Meal.name.contains(keyword),
-                        Meal.description.contains(keyword)
+                query = (
+                    db.session.query(
+                        Meal,
+                        func.count(User.id).label('likes_count')
                     )
-                ).group_by(Meal.id).order_by(func.count(User.id).desc())
+                    .join(Meal.liked_by_users, isouter=True)
+                    .filter(
+                        or_(
+                            Meal.name.contains(keyword),
+                            Meal.description.contains(keyword)
+                        )
+                    )
+                    .group_by(Meal.id)
+                    .order_by(func.count(User.id).desc())
+                )
                 results = [row[0] for row in query.all()]
-            return render_template('search.html', form=form, results=results, keyword=keyword)
-        
+            return render_template(
+                'search.html',
+                form=form,
+                results=results,
+                keyword=keyword
+            )
+
         results = query.all()
-    
+
     return render_template('search.html', form=form, results=results)
 
 
@@ -178,32 +220,36 @@ def search():
 def rankings():
     """排行榜页面"""
     # 作物排行榜（按点赞数降序）
-    crop_rankings = db.session.query(
-        Crop,
-        func.count(User.id).label('likes_count')
-    ).join(
-        Crop.liked_by_users, isouter=True
-    ).group_by(
-        Crop.id
-    ).order_by(
-        func.count(User.id).desc()
-    ).limit(10).all()
-    
+    crop_rankings = (
+        db.session.query(
+            Crop,
+            func.count(User.id).label('likes_count')
+        )
+        .join(Crop.liked_by_users, isouter=True)
+        .group_by(Crop.id)
+        .order_by(func.count(User.id).desc())
+        .limit(10)
+        .all()
+    )
+
     # 菜品排行榜（按点赞数降序）
-    meal_rankings = db.session.query(
-        Meal,
-        func.count(User.id).label('likes_count')
-    ).join(
-        Meal.liked_by_users, isouter=True
-    ).group_by(
-        Meal.id
-    ).order_by(
-        func.count(User.id).desc()
-    ).limit(10).all()
-    
-    return render_template('rankings.html', 
-                         crop_rankings=crop_rankings, 
-                         meal_rankings=meal_rankings)
+    meal_rankings = (
+        db.session.query(
+            Meal,
+            func.count(User.id).label('likes_count')
+        )
+        .join(Meal.liked_by_users, isouter=True)
+        .group_by(Meal.id)
+        .order_by(func.count(User.id).desc())
+        .limit(10)
+        .all()
+    )
+
+    return render_template(
+        'rankings.html',
+        crop_rankings=crop_rankings,
+        meal_rankings=meal_rankings
+    )
 
 
 @main_bp.route('/api/like/crop/<int:id>', methods=['POST'])
@@ -211,7 +257,7 @@ def rankings():
 def like_crop(id):
     """AJAX 点赞作物"""
     crop = Crop.query.get_or_404(id)
-    
+
     if crop in current_user.liked_crops.all():
         # 取消点赞
         current_user.liked_crops.remove(crop)
@@ -220,13 +266,15 @@ def like_crop(id):
         # 添加点赞
         current_user.liked_crops.append(crop)
         is_liked = True
-    
+
     db.session.commit()
-    
+
     # 记录日志
     from app.utils import log_action
-    log_action(f"User {current_user.username} {'liked' if is_liked else 'unliked'} crop {crop.name}")
-    
+    action = "liked" if is_liked else "unliked"
+    message = f"User {current_user.username} {action} crop {crop.name}"
+    log_action(message)
+
     return jsonify({
         'success': True,
         'likes_count': crop.get_likes_count(),
@@ -239,7 +287,7 @@ def like_crop(id):
 def like_meal(id):
     """AJAX 点赞菜品"""
     meal = Meal.query.get_or_404(id)
-    
+
     if meal in current_user.liked_meals.all():
         # 取消点赞
         current_user.liked_meals.remove(meal)
@@ -248,16 +296,17 @@ def like_meal(id):
         # 添加点赞
         current_user.liked_meals.append(meal)
         is_liked = True
-    
+
     db.session.commit()
-    
+
     # 记录日志
     from app.utils import log_action
-    log_action(f"User {current_user.username} {'liked' if is_liked else 'unliked'} meal {meal.name}")
-    
+    action = "liked" if is_liked else "unliked"
+    message = f"User {current_user.username} {action} meal {meal.name}"
+    log_action(message)
+
     return jsonify({
         'success': True,
         'likes_count': meal.get_likes_count(),
         'is_liked': is_liked
     })
-

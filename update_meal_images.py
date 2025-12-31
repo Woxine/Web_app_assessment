@@ -1,12 +1,12 @@
 """
-更新菜品图片 URL
+Update Meal Image URLs
 """
 from app import create_app, db
 from app.models import Meal
 
 app = create_app()
 
-# 菜品名称到图片文件的映射
+# Mapping of meal names to image files
 MEAL_IMAGE_MAPPING = {
     'Beetroot Soup': 'Beetroot_Soup.png',
     'Cooked Rice': 'Cooked_Rice.webp',
@@ -21,10 +21,10 @@ MEAL_IMAGE_MAPPING = {
 }
 
 def update_meal_images():
-    """更新菜品图片 URL"""
+    """Update Meal Image URLs"""
     with app.app_context():
         print("=" * 60)
-        print("更新菜品图片 URL")
+        print("Update Meal Image URLs")
         print("=" * 60)
 
         updated_count = 0

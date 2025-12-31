@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}排行榜 - Farmer's Delight Wiki{% endblock %}
+{% block title %}Rankings - Farmer's Delight Wiki{% endblock %}
 
 {% block content %}
 <section>
     <header>
-        <h1>🏆 排行榜</h1>
-        <p>看看社区中最受欢迎的作物和菜品！</p>
+        <h1>🏆 Rankings</h1>
+        <p>Check out the most popular crops and meals in the community!</p>
     </header>
 
     <div class="rankings-container">
         <section class="crop-rankings">
-            <h2>🌱 最受欢迎的作物</h2>
+            <h2>🌱 Most Popular Crops</h2>
             {% if crop_rankings %}
                 <ol class="ranking-list" role="list">
                     {% for crop, likes_count in crop_rankings %}
@@ -23,14 +23,14 @@
                 </ol>
             {% else %}
                 <div class="no-results">
-                    <h3>🌱 暂无作物数据</h3>
-                    <p>快来为作物点赞吧！</p>
+                    <h3>🌱 No crop data available</h3>
+                    <p>Come vote for crops!</p>
                 </div>
             {% endif %}
         </section>
 
         <section class="meal-rankings">
-            <h2>🍽️ 最受欢迎的菜品</h2>
+            <h2>🍽️ Most Popular Meals</h2>
             {% if meal_rankings %}
                 <ol class="ranking-list" role="list">
                     {% for meal, likes_count in meal_rankings %}
@@ -42,8 +42,8 @@
                 </ol>
             {% else %}
                 <div class="no-results">
-                    <h3>🍽️ 暂无菜品数据</h3>
-                    <p>快来为菜品点赞吧！</p>
+                    <h3>🍽️ No meal data available</h3>
+                    <p>Come vote for meals!</p>
                 </div>
             {% endif %}
         </section>
