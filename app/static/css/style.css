@@ -95,7 +95,7 @@ nav ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem; /* 减少间距以防止换行 */
+    gap: 1rem; /* 减少间距以防止换行 */
     padding: 0;
     margin: 0;
 }
