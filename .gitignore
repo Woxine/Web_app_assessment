@@ -33,7 +33,7 @@ Thumbs.db
 .venv
 
 # text files
-*.txt
+# *.txt
 *.docx
 *.pdf
 
